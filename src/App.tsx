@@ -1,11 +1,18 @@
-function App() {
+import Navbar from "./components/Navbar";
 
-  return (
-    <div className="text-4xl font-bold text-red-500">
-      Dev Stack
-    </div>
-  );
+
+function App(){
+
+return(
+
+<>
+<Navbar/>
+
+</>
+
+)
 
 }
+
 
 export default App;
