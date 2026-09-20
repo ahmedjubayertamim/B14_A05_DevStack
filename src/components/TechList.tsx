@@ -1,23 +1,26 @@
+import type {Technology} from "../types/technology";
+
 import TechCard from "./TechCard";
-import type { Technology } from "../types/technology";
 
 
 interface Props{
 
 technologies:Technology[];
 
-handleAddToStack:(tech:Technology)=>void;
-
 stack:Technology[];
+
+setStack:
+React.Dispatch<
+React.SetStateAction<Technology[]>
+>;
 
 }
 
 
-
 function TechList({
 technologies,
-handleAddToStack,
-stack
+stack,
+setStack
 }:Props){
 
 
@@ -33,7 +36,8 @@ gap-6
 
 
 {
-technologies.map((tech)=>(
+technologies.map(
+(tech)=>(
 
 <TechCard
 
@@ -41,24 +45,24 @@ key={tech.id}
 
 tech={tech}
 
-handleAddToStack={handleAddToStack}
+stack={stack}
 
-isAdded={
-stack.some(
-(item)=>item.id===tech.id
-)
-}
+setStack={setStack}
 
 />
 
-))
+)
+
+)
 
 }
 
 
 </div>
 
+
 )
+
 
 }
 

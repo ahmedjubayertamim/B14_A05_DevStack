@@ -1,242 +1,254 @@
 import type { Technology } from "../types/technology";
 
 
-interface TechCardProps {
+interface TechCardProps{
 
-    tech: Technology;
+tech:Technology;
 
-    handleAddToStack: (tech: Technology) => void;
+stack:Technology[];
 
-    isAdded: boolean;
+setStack:
+React.Dispatch<
+React.SetStateAction<Technology[]>
+>;
 
 }
 
 
 
 function TechCard({
-    tech,
-    handleAddToStack,
-    isAdded
-}: TechCardProps) {
+tech,
+stack,
+setStack
+}:TechCardProps){
 
 
-    return (
 
-        <div
-        className="
-        card
-        bg-white
-        border
-        border-gray-200
-        rounded-xl
-        shadow-sm
-        hover:shadow-md
-        transition
-        "
-        >
+const isAdded =
+stack.some(
+(item)=>item.id===tech.id
+);
 
 
-            <div className="card-body p-5">
 
+const handleAdd = ()=>{
 
 
-                {/* Top Section */}
+if(isAdded){
 
-                <div className="
-                flex
-                justify-between
-                items-start
-                ">
+return;
 
+}
 
-                    {/* Icon */}
 
-                    <img
-                    src={tech.icon}
-                    alt={tech.name}
-                    className="
-                    w-10
-                    h-10
-                    object-contain
-                    "
-                    />
 
+setStack(
+(previous)=>[
+...previous,
+tech
+]
+);
 
 
-                    {/* Badge */}
+}
 
-                    <span
-                    className="
-                    badge
-                    badge-outline
-                    text-xs
-                    "
-                    >
 
-                    {tech.badge}
 
-                    </span>
+return(
 
 
-                </div>
+<div className="
+card
+bg-white
+border
+border-gray-200
+rounded-xl
+shadow-sm
+hover:shadow-md
+transition
+">
 
 
+<div className="card-body p-5">
 
 
-                {/* Name */}
 
-                <h2
-                className="
-                card-title
-                text-xl
-                mt-4
-                text-[#111827]
-                "
-                >
+{/* Top */}
 
-                    {tech.name}
+<div className="
+flex
+justify-between
+items-start
+">
 
-                </h2>
 
+<img
 
+src={tech.icon}
 
+alt={tech.name}
 
-                {/* Description */}
+className="
+w-10
+h-10
+"
 
-                <p
-                className="
-                text-sm
-                text-gray-500
-                leading-relaxed
-                min-h-[60px]
-                "
-                >
+/>
 
-                    {tech.description}
 
-                </p>
 
+<span className="
+badge
+badge-outline
+text-xs
+">
 
+{tech.badge}
 
+</span>
 
-                {/* Meta */}
 
-                <div
-                className="
-                flex
-                justify-between
-                items-center
-                mt-4
-                "
-                >
+</div>
 
 
-                    <span
-                    className="
-                    badge
-                    badge-ghost
-                    text-xs
-                    "
-                    >
 
-                    {tech.category}
 
-                    </span>
 
+<h2 className="
+card-title
+mt-4
+text-xl
+">
 
 
+{tech.name}
 
-                    <span
-                    className="
-                    text-xs
-                    text-gray-500
-                    "
-                    >
 
-                    {tech.difficulty}
+</h2>
 
-                    </span>
 
 
-                </div>
 
+<p className="
+text-sm
+text-gray-500
+leading-relaxed
+">
 
+{tech.description}
 
+</p>
 
-                {/* Rating */}
 
-                <div
-                className="
-                mt-3
-                text-sm
-                "
-                >
 
-                ⭐ {tech.rating}
 
 
-                </div>
+<div className="
+flex
+justify-between
+items-center
+mt-4
+">
 
 
+<span className="
+badge
+badge-ghost
+">
 
+{tech.category}
 
+</span>
 
-                {/* Button */}
 
-                <button
 
-                onClick={() => handleAddToStack(tech)}
+<span className="
+text-xs
+text-gray-500
+">
 
-                disabled={isAdded}
+{tech.difficulty}
 
-                className={`
-                
-                btn
-                w-full
-                mt-4
-                
-                ${
-                    isAdded
+</span>
 
-                    ?
 
-                    "bg-gray-300 text-gray-600"
+</div>
 
-                    :
 
-                    "bg-[#111827] text-white hover:bg-black"
 
-                }
 
-                `}
-                
-                >
 
+<div className="
+mt-3
+text-sm
+">
 
-                {
-                    isAdded
+⭐ {tech.rating}
 
-                    ?
+</div>
 
-                    "✓ Added to Stack"
 
-                    :
 
-                    "Add to Stack"
 
-                }
 
 
-                </button>
+<button
 
+onClick={handleAdd}
 
+disabled={isAdded}
 
-            </div>
+className={`
+btn
+w-full
+mt-5
 
+${
+isAdded
 
-        </div>
+?
 
-    );
+"bg-gray-300 text-gray-600"
+
+:
+
+"bg-[#111827] text-white"
+
+}
+
+`}
+
+>
+
+
+{
+
+isAdded
+
+?
+
+"✓ Added to Stack"
+
+:
+
+"Add to Stack"
+
+}
+
+
+</button>
+
+
+
+
+</div>
+
+
+</div>
+
+
+)
+
 
 }
 
