@@ -1,27 +1,32 @@
-import type {Technology} from "../types/technology";
-
 import TechCard from "./TechCard";
 
+import type { Technology } from "../types/technology";
 
-interface Props{
+
+interface TechListProps{
+
 
 technologies:Technology[];
 
 stack:Technology[];
 
-setStack:
-React.Dispatch<
-React.SetStateAction<Technology[]>
->;
+handleAddToStack:
+(tech:Technology)=>void;
+
 
 }
 
 
+
 function TechList({
+
 technologies,
+
 stack,
-setStack
-}:Props){
+
+handleAddToStack
+
+}:TechListProps){
 
 
 return(
@@ -36,8 +41,10 @@ gap-6
 
 
 {
+
 technologies.map(
-(tech)=>(
+tech=>(
+
 
 <TechCard
 
@@ -47,19 +54,22 @@ tech={tech}
 
 stack={stack}
 
-setStack={setStack}
+handleAddToStack={
+handleAddToStack
+}
 
 />
 
+
 )
 
 )
+
 
 }
 
 
 </div>
-
 
 )
 

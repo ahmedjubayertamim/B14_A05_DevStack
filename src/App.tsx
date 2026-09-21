@@ -2,273 +2,235 @@ import { useEffect, useState } from "react";
 
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
-import TechList from "./components/TechList";
+import MainLayout from "./components/MainLayout";
+import Footer from "./components/Footer";
 
 import type { Technology } from "./types/technology";
 
-
 import {
-  ToastContainer,
-  toast
+    ToastContainer,
+    toast
 } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 
 
-
 function App() {
 
 
-  // Technology data state
-
-  const [technologies, setTechnologies] =
-    useState<Technology[]>([]);
+    const [technologies, setTechnologies] =
+        useState<Technology[]>([]);
 
 
-
-  // Selected stack state
-
-  const [stack, setStack] =
-    useState<Technology[]>([]);
+    const [stack, setStack] =
+        useState<Technology[]>([]);
 
 
-
-  // Loading state
-
-  const [loading, setLoading] =
-    useState(true);
+    const [loading, setLoading] =
+        useState(true);
 
 
 
+    useEffect(()=>{
 
 
-  // Fetch JSON Data
-
-  useEffect(() => {
+        const loadTechnologies = async()=>{
 
 
-    const loadData = async () => {
+            try{
 
 
-      try {
+                const response =
+                await fetch("/data.json");
 
 
-        const response =
-          await fetch("/data.json");
+                const data:Technology[] =
+                await response.json();
+
+
+                setTechnologies(data);
+
+
+            }
+
+            catch(error){
+
+                toast.error(
+                    "Failed to load data"
+                );
+
+            }
+
+            finally{
+
+                setLoading(false);
+
+            }
+
+
+        };
+
+
+        loadTechnologies();
+
+
+    },[]);
 
 
 
-        const data: Technology[] =
-          await response.json();
 
 
-
-        setTechnologies(data);
-
-
-
-      }
-
-      catch(error) {
+    const handleAddToStack =
+    (tech:Technology)=>{
 
 
-        console.log(error);
-
-
-        toast.error(
-          "Failed to load technologies"
+        const exists =
+        stack.some(
+            item=>item.id===tech.id
         );
 
 
-      }
 
-      finally {
-
-
-        setLoading(false);
+        if(exists){
 
 
-      }
+            toast.warning(
+                "Already added!"
+            );
+
+
+            return;
+
+        }
+
+
+
+        setStack(
+            previous=>[
+                ...previous,
+                tech
+            ]
+        );
+
+
+        toast.success(
+            `${tech.name} added`
+        );
 
 
     };
 
 
 
-    loadData();
-
-
-  }, []);
 
 
 
+    const handleRemoveFromStack =
+    (id:string)=>{
 
 
-  // Add Technology To Stack
-
-  const handleAddToStack = (
-    tech: Technology
-  ) => {
-
-
-
-    const isAlreadyAdded =
-      stack.some(
-        (item) => item.id === tech.id
-      );
+        setStack(
+            previous=>
+            previous.filter(
+                item=>item.id!==id
+            )
+        );
 
 
-
-    if (isAlreadyAdded) {
-
-
-      toast.warning(
-        "Already added!"
-      );
+        toast.info(
+            "Technology removed"
+        );
 
 
-      return;
-
-
-    }
+    };
 
 
 
 
 
-    setStack(
-      (previousStack) => [
-        ...previousStack,
-        tech
-      ]
-    );
+    const handleRemoveAll =
+    ()=>{
 
 
-
-    toast.success(
-      `${tech.name} added to stack`
-    );
+        setStack([]);
 
 
-  };
+        toast.error(
+            "All removed"
+        );
+
+
+    };
 
 
 
 
 
+    return (
 
-  return (
-
-    <>
-
-
-      <Navbar />
+        <>
 
 
-      <Hero />
+        <Navbar/>
 
-
-
-      <section
-        className="
-        max-w-7xl
-        mx-auto
-        px-6
-        lg:px-16
-        py-20
-        "
-      >
-
-
-
-        <h2
-          className="
-          text-4xl
-          font-bold
-          "
-        >
-
-          Explore the
-
-          <span
-            className="
-            ml-2
-            bg-gradient-to-r
-            from-orange-500
-            via-pink-500
-            to-purple-500
-            bg-clip-text
-            text-transparent
-            "
-          >
-
-            Technologies
-
-          </span>
-
-
-        </h2>
-
-
-
+        <Hero/>
 
 
         {
-          loading ?
+            loading
 
+            ?
 
-          (
+            <div className="
+            text-center
+            py-20
+            ">
 
-            <div
-              className="
-              text-center
-              mt-10
-              "
-            >
-
-              Loading Technologies...
+            Loading...
 
             </div>
 
-          )
+
+            :
+
+            <MainLayout
 
 
-          :
+            technologies={technologies}
 
 
-          (
+            stack={stack}
 
-            <TechList
 
-              technologies={technologies}
+            handleAddToStack={
+                handleAddToStack
+            }
 
-              stack={stack}
 
-              setStack={setStack}
+            handleRemoveFromStack={
+                handleRemoveFromStack
+            }
+
+
+            handleRemoveAll={
+                handleRemoveAll
+            }
+
 
             />
-
-
-          )
-
 
         }
 
 
-
-      </section>
-
+        <Footer/>
 
 
+        <ToastContainer/>
 
 
-      <ToastContainer />
+        </>
 
-
-
-    </>
-
-  );
+    );
 
 }
 

@@ -3,82 +3,48 @@ import type { Technology } from "../types/technology";
 
 interface TechCardProps{
 
+
 tech:Technology;
 
 stack:Technology[];
 
-setStack:
-React.Dispatch<
-React.SetStateAction<Technology[]>
->;
+handleAddToStack:
+(tech:Technology)=>void;
+
 
 }
 
 
 
 function TechCard({
+
 tech,
+
 stack,
-setStack
+
+handleAddToStack
+
+
 }:TechCardProps){
 
 
 
 const isAdded =
 stack.some(
-(item)=>item.id===tech.id
+item=>item.id===tech.id
 );
-
-
-
-const handleAdd = ()=>{
-
-
-if(isAdded){
-
-return;
-
-}
-
-
-
-setStack(
-(previous)=>[
-...previous,
-tech
-]
-);
-
-
-}
 
 
 
 return(
 
-
 <div className="
 card
 bg-white
 border
-border-gray-200
 rounded-xl
+p-5
 shadow-sm
-hover:shadow-md
-transition
-">
-
-
-<div className="card-body p-5">
-
-
-
-{/* Top */}
-
-<div className="
-flex
-justify-between
-items-start
 ">
 
 
@@ -96,11 +62,9 @@ h-10
 />
 
 
-
 <span className="
 badge
-badge-outline
-text-xs
+mt-3
 ">
 
 {tech.badge}
@@ -108,31 +72,23 @@ text-xs
 </span>
 
 
-</div>
-
-
-
-
 
 <h2 className="
-card-title
-mt-4
 text-xl
+font-bold
+mt-4
 ">
 
-
 {tech.name}
-
 
 </h2>
 
 
 
-
 <p className="
-text-sm
 text-gray-500
-leading-relaxed
+text-sm
+mt-2
 ">
 
 {tech.description}
@@ -141,33 +97,23 @@ leading-relaxed
 
 
 
-
-
 <div className="
 flex
 justify-between
-items-center
 mt-4
 ">
 
 
-<span className="
-badge
-badge-ghost
-">
+<span className="badge">
 
 {tech.category}
 
 </span>
 
 
+<span>
 
-<span className="
-text-xs
-text-gray-500
-">
-
-{tech.difficulty}
+⭐ {tech.rating}
 
 </span>
 
@@ -177,24 +123,11 @@ text-gray-500
 
 
 
-
-<div className="
-mt-3
-text-sm
-">
-
-⭐ {tech.rating}
-
-</div>
-
-
-
-
-
-
 <button
 
-onClick={handleAdd}
+onClick={()=>
+handleAddToStack(tech)
+}
 
 disabled={isAdded}
 
@@ -208,11 +141,11 @@ isAdded
 
 ?
 
-"bg-gray-300 text-gray-600"
+"bg-gray-300"
 
 :
 
-"bg-[#111827] text-white"
+"bg-black text-white"
 
 }
 
@@ -222,7 +155,6 @@ isAdded
 
 
 {
-
 isAdded
 
 ?
@@ -237,11 +169,6 @@ isAdded
 
 
 </button>
-
-
-
-
-</div>
 
 
 </div>
