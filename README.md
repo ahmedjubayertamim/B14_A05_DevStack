@@ -65,3 +65,23 @@ For example, I used it in the "Your Stack" section:
 ) : (
   <div>Selected technologies</div>
 )}
+How do you pass data from a parent component to a child component, and how does a child send something back to the parent?
+
+A parent component passes data to a child using props.
+
+Example:
+
+<TechCard tech={tech} />
+
+A child can communicate with the parent by calling a function that the parent passes through props.
+
+Example:
+
+<TechCard
+  tech={tech}
+  handleAddToStack={handleAddToStack}
+/>
+
+The child can then call:
+
+handleAddToStack(tech);
